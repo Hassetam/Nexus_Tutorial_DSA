@@ -1,19 +1,21 @@
 class Solution:
     def characterReplacement(self, s: str, k: int) -> int:
-        i, j = 0, 0
-        n = len(s)
+        i = 0
         max_len = 0
         count = {}
+        max_freq = 0
 
-        while j < n:
+        for j in range(len(s)):
             count[s[j]] = count.get(s[j], 0) + 1
+            max_freq = max(max_freq, count[s[j]])
 
-            # if too many replacements are needed
-            while (j - i + 1) - max(count.values()) > k:
+            window_size = j - i + 1
+
+            if window_size - max_freq > k:
                 count[s[i]] -= 1
                 i += 1
+                window_size = j - i + 1
 
-            max_len = max(max_len, j - i + 1)
-            j += 1
+            max_len = max(max_len, window_size)
 
         return max_len
